@@ -12,10 +12,7 @@ case class OrderItem(name: String, quantity: Int, linePrice: Double)
 class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map()) {
 
   def receipt: String = {
-    val header = formatHeader()
-    val items = formatItems()
-    val total = formatTotal()
-    header + items + total
+    formatHeader() + formatItems() + formatTotal()
   }
 
   private def formatHeader(): String = {
