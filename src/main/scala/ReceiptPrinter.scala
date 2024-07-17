@@ -7,9 +7,11 @@ class CafeDetails (
                   )
 
 class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map()) {
-
-  /*<!-- OMITTED -->*/
   def receipt: String = {
-    cafe.shopName
+    cafe.shopName + "\n" + cafe.address + "\n" + order.map(_._1).mkString("\n")
+  }
+
+  def addItem(item: String) = {
+    order = order + (item -> 1)
   }
 }
