@@ -10,18 +10,20 @@ class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map())
 
   def receipt: String = {
     val header = formatHeader()
-    val items = order
-      .map{ case (item, quantity) =>
-        val totalPrice = cafe.prices(item) * quantity
-        f"$item $quantity £$totalPrice%.2f"
-      }
-      .mkString("\n")
+    val items = formatItems()
     val grandTotal = calculateGrandTotal()
     header + items + f"\n Grand Total: £$grandTotal%.2f"
   }
 
   private def formatHeader(): String = {
     s"${cafe.shopName}\n${cafe.address}\nTel: ${cafe.phone}\n"
+  }
+
+  private def formatItems(): String = {
+    order.map{ case (item, quantity) =>
+      val totalPrice = cafe.prices(item) * quantity
+      f"$item $quantity £$totalPrice%.2f"
+    }.mkString("\n")
   }
 
   def addItem(item: String) = {
