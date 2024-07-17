@@ -11,8 +11,8 @@ class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map())
   def receipt: String = {
     val header = formatHeader()
     val items = formatItems()
-    val grandTotal = formatGrandTotal()
-    header + items + grandTotal
+    val total = formatTotal()
+    header + items + total
   }
 
   private def formatHeader(): String = {
@@ -21,14 +21,14 @@ class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map())
 
   private def formatItems(): String = {
     order.map{ case (item, quantity) =>
-      val totalPrice = cafe.prices(item) * quantity
-      f"$item $quantity £$totalPrice%.2f"
+      val linePrice = cafe.prices(item) * quantity
+      f"$item $quantity £$linePrice%.2f"
     }.mkString("\n")
   }
 
-  private def formatGrandTotal(): String = {
-    val grandTotal = calculateGrandTotal()
-    f"\n Grand Total: £$grandTotal%.2f"
+  private def formatTotal(): String = {
+    val total = calculateTotal()
+    f"\n Total: £$total%.2f"
   }
 
   def addItem(item: String) = {
@@ -36,9 +36,13 @@ class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map())
     else order = order + (item -> 1)
   }
 
-  private def calculateGrandTotal(): Double = {
+  private def calculateTotal(): Double = {
     order.map { case (item, quantity) =>
       cafe.prices(item) * quantity
     }.sum
+  }
+
+  private def calculateTotalPrice() = {
+
   }
 }
