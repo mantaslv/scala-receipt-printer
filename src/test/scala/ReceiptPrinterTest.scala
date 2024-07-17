@@ -47,12 +47,18 @@ class ReceiptPrinterSpec extends AnyWordSpec with Matchers {
 
       printer.addItem("Tea")
 
-      "added item is shown" in {
-        println(printer.receipt)
+      "one added item is shown" in {
         printer.receipt should include ("Tea")
       }
 
+      "one added item is shown with quantity" in {
+        printer.receipt should include ("Tea 1")
+      }
 
+      "two added items are shown with quantity" in {
+        printer.addItem("Tea")
+        printer.receipt should include ("Tea 2")
+      }
     }
   }
 }
