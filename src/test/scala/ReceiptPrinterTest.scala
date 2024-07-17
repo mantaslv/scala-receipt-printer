@@ -69,6 +69,10 @@ class ReceiptPrinterSpec extends AnyWordSpec with Matchers {
         printer.receipt should include ("Tea 2 £7.30")
         printer.receipt should include ("Cortado 1 £4.55")
       }
+
+      "grand total is shown" in {
+        printer.receipt should include ("Grand Total: £16.60")
+      }
     }
   }
 }
