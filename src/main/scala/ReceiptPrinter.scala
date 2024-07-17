@@ -1,3 +1,4 @@
+
 // src/main/scala/ReceiptPrinter.scala
 class CafeDetails (
                     val shopName: String,
@@ -5,6 +6,8 @@ class CafeDetails (
                     val phone: String,
                     val prices: Map[String, Double]
                   )
+
+case class OrderItem(item: String, quantity: Int, linePrice: Double)
 
 class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map()) {
 
@@ -27,7 +30,7 @@ class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map())
   }
 
   private def formatTotal(): String = {
-    val total = calculateTotal()
+    val total = calculateTotalPrice()
     f"\n Total: £$total%.2f"
   }
 
@@ -36,13 +39,17 @@ class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map())
     else order = order + (item -> 1)
   }
 
-  private def calculateTotal(): Double = {
-    order.map { case (item, quantity) =>
+  private def calculateTotalPrice(): Double = {
+    /*order.map { case (item, quantity) =>
       cafe.prices(item) * quantity
-    }.sum
+    }.sum*/
+    mapLinePrices().map(_.linePrice).sum
   }
 
-  private def calculateTotalPrice() = {
-
+  private def mapLinePrices(): List[OrderItem] = {
+    order.map{ case (item, quantity) =>
+      val linePrice = cafe.prices(item) * quantity
+      OrderItem(item, quantity, linePrice)
+    }.toList
   }
 }
