@@ -41,12 +41,18 @@ class ReceiptPrinterSpec extends AnyWordSpec with Matchers {
         printer.receipt should include ("123 Lakeside Way")
       }
 
+      "contains the phone number of the cafe" in {
+        printer.receipt should include ("Tel: 16503600708")
+      }
+
       printer.addItem("Tea")
 
       "added item is shown" in {
         println(printer.receipt)
         printer.receipt should include ("Tea")
       }
+
+
     }
   }
 }
