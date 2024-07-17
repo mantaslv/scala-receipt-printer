@@ -8,7 +8,7 @@ class CafeDetails (
 
 class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map()) {
 
-  <!-- OMITTED -->
+  /*<!-- OMITTED -->*/
   def receipt: String = {
     cafe.shopName
   }

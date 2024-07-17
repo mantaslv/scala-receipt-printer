@@ -28,14 +28,18 @@ class ReceiptPrinterSpec extends AnyWordSpec with Matchers {
 
   "A ReceiptPrinter" should {
     "format a receipt" which {
+      val printer = new ReceiptPrinter(
+        coffeeConnectionCafe,
+        Map("Cafe Latte" -> 1)
+      )
+
       "contains the name of the cafe" in {
-        val printer = new ReceiptPrinter(
-          coffeeConnectionCafe,
-          Map("Cafe Latte" -> 1)
-        )
         printer.receipt should include ("The Coffee Connection")
       }
-      // add more tests here.
+
+      "contains the address of the cafe" in {
+        printer.receipt should include ("123 Lakeside Way")
+      }
     }
   }
 }
