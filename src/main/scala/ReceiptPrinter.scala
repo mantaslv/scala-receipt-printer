@@ -7,7 +7,7 @@ class CafeDetails (
                     val prices: Map[String, Double]
                   )
 
-case class OrderItem(item: String, quantity: Int, linePrice: Double)
+case class OrderItem(name: String, quantity: Int, linePrice: Double)
 
 class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map()) {
 
@@ -23,10 +23,9 @@ class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map())
   }
 
   private def formatItems(): String = {
-    order.map{ case (item, quantity) =>
-      val linePrice = cafe.prices(item) * quantity
-      f"$item $quantity £$linePrice%.2f"
-    }.mkString("\n")
+    mapLinePrices()
+      .map(item => f"${item.name} ${item.quantity} £${item.linePrice}%.2f")
+      .mkString("\n")
   }
 
   private def formatTotal(): String = {
@@ -34,22 +33,19 @@ class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map())
     f"\n Total: £$total%.2f"
   }
 
-  def addItem(item: String) = {
-    if (order.contains(item)) order = order + (item -> (order(item) + 1))
-    else order = order + (item -> 1)
+  def addItem(name: String) = {
+    if (order.contains(name)) order = order + (name -> (order(name) + 1))
+    else order = order + (name -> 1)
   }
 
   private def calculateTotalPrice(): Double = {
-    /*order.map { case (item, quantity) =>
-      cafe.prices(item) * quantity
-    }.sum*/
     mapLinePrices().map(_.linePrice).sum
   }
 
   private def mapLinePrices(): List[OrderItem] = {
-    order.map{ case (item, quantity) =>
-      val linePrice = cafe.prices(item) * quantity
-      OrderItem(item, quantity, linePrice)
+    order.map{ case (name, quantity) =>
+      val linePrice = cafe.prices(name) * quantity
+      OrderItem(name, quantity, linePrice)
     }.toList
   }
 }
