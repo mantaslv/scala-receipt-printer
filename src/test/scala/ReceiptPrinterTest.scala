@@ -59,12 +59,10 @@ class ReceiptPrinterSpec extends AnyWordSpec with Matchers {
         printer.receipt should include ("Tea 1 £3.65")
       }
 
-      "two added items are shown with quantity" in {
+      "two added items are shown with quantity and total price" in {
         printer.addItem("Tea")
-        printer.receipt should include ("Tea 2")
+        printer.receipt should include ("Tea 2 £7.30")
       }
-
-
     }
   }
 }

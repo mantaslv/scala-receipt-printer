@@ -10,7 +10,10 @@ class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map())
   def receipt: String = {
     val header = s"${cafe.shopName}\n${cafe.address}\nTel: ${cafe.phone}\n"
     val items = order
-      .map{case (item, quantity) => s"$item $quantity £${cafe.prices(item)}"}
+      .map{case (item, quantity) =>
+        val totalPrice = cafe.prices(item) * quantity
+        f"$item $quantity £$totalPrice%.2f"
+      }
       .mkString("\n")
     header + items
   }
