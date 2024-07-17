@@ -9,7 +9,7 @@ class CafeDetails (
 class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map()) {
 
   def receipt: String = {
-    val header = s"${cafe.shopName}\n${cafe.address}\nTel: ${cafe.phone}\n"
+    val header = formatHeader()
     val items = order
       .map{ case (item, quantity) =>
         val totalPrice = cafe.prices(item) * quantity
@@ -20,12 +20,16 @@ class ReceiptPrinter(val cafe: CafeDetails, var order: Map[String, Int] = Map())
     header + items + f"\n Grand Total: £$grandTotal%.2f"
   }
 
+  private def formatHeader(): String = {
+    s"${cafe.shopName}\n${cafe.address}\nTel: ${cafe.phone}\n"
+  }
+
   def addItem(item: String) = {
     if (order.contains(item)) order = order + (item -> (order(item) + 1))
     else order = order + (item -> 1)
   }
 
-  def calculateGrandTotal(): Double = {
+  private def calculateGrandTotal(): Double = {
     order.map { case (item, quantity) =>
       cafe.prices(item) * quantity
     }.sum
